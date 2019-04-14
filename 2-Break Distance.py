@@ -26,29 +26,7 @@
         Total Blocks = 6
 '''
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CRM.FelonAudit.Activities;
-using Microsoft.Xrm.Sdk.Client;
-using System.Configuration;
-using System.ServiceModel.Description;
-using Microsoft.Crm.Sdk.Messages;
-using System.Diagnostics;
-using System.IO;
-using System.Collections;
-using System.Text.RegularExpressions;
-
-namespace CRM.FelonAudit.Test
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Program.TwoBreakDistance();
-         }
+TwoBreakDistance();
 
         #region "TwoBreakDistance()"
         static ArrayList nodes = new ArrayList();
@@ -224,5 +202,3 @@ namespace CRM.FelonAudit.Test
         }
         #endregion "TwoBreakDistance()"
 
-    }
-}
