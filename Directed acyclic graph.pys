@@ -1,0 +1,106 @@
+'''
+The Longest Path in a DAG Problem.
+     Input: An integer representing the source node of a graph, followed by an integer representing the sink
+     node of the graph, followed by a list of edges in the graph. The edge notation 0->1:7 indicates that
+     an edge connects node 0 to node 1 with weight 7.
+           0
+           4
+           0->1:7
+           0->2:4
+           2->3:2
+           1->4:1
+           3->4:3
+     Output: The length of a longest path in the graph, followed by a longest path.
+           9
+           0->2->3->4
+'''
+
+import collections   
+import itertools
+import datetime
+
+tstart = datetime.datetime.now()
+print str(tstart)
+
+in_file = open('w_6_4_data_set1.txt', 'r')
+
+line = 0
+in_s = ""
+in_e = ""
+in_n={}
+n=0
+start_pos=[]
+for in_data in in_file:
+    ldata = in_data.strip(' \t\n\r')
+    if(len(ldata)==0):
+        break
+    elif(line==0):
+        in_s = int(ldata);
+    elif(line==1):
+        in_e = int(ldata);
+    elif(line>1):
+       #in_n.append(ldata);
+       pl = ldata.index(":")
+       pa = ldata.index(">")
+       we = int(ldata[pl+1:])
+       en= int(ldata[pa+1:pl])
+       sa = int(ldata[0:pa-1])
+       in_n[n]=[sa,en,we]
+       #in_nb.append(True)
+       if(in_s==sa):
+           start_pos.append(n)
+       n+=1
+       #print ldata, we, pa ,ldata[pa+1:pl],ldata[0:pa-1]
+    line+=1
+#print in_s, in_e, in_n,start_pos, len(in_n)
+
+lp_dag={}
+for j,ja in enumerate(start_pos):
+    in_nb=[True]*(len(in_n)+1)
+    #print in_nb
+    totwei=0
+    next_start=in_s
+    dag=False
+    nused=[]
+    i=ja
+    match=True
+    while(not dag):
+       #print i, in_nb[i], in_n[i][0], next_start
+       if(in_nb[i] and in_n[i][0]==next_start):
+            next_start = in_n[i][1]
+            totwei+=in_n[i][2]
+            #print " " ,in_n[i], next_start, totwei
+            in_nb[i]=False
+            nused.append(i)
+            i=-1
+            if(next_start==in_e):
+               dag=True
+       i+=1
+       if(i==len(in_n) and dag==False):
+           dag=True
+           match=False
+       #print in_nb
+    #print nused, totwei
+    if(match):
+        lp_dag[j]= [totwei,nused]
+
+#print lp_dag
+#print ''
+lpw=0
+lpp=[]
+for j,ja in enumerate(lp_dag):
+    if(lp_dag[ja][0]>lpw):
+        lpw = lp_dag[ja][0]
+        lpp= lp_dag[ja][1]
+
+#print lpw,lpp
+grp=''
+for j,ja in enumerate(lpp):
+    grp+=str(in_n[ja][0])+'->'
+
+grp+=str(in_e)
+print lpw
+print  grp
+tend = datetime.datetime.now()        
+print str(tstart), " - " , str(tend) , " - ", str(tend-tstart)
+print "Done"
